@@ -8,8 +8,15 @@ import menu.MainMenu;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     //    Truoc khi co Login
+//    public static void main(String[] args) {
+//        MainMenu mainMenu = new MainMenu();
+//        mainMenu.showMenu();
+//    }
+
+    //    Sau khi co Login
     public static void main(String[] args) {
-        MainMenu mainMenu = new MainMenu();
-        mainMenu.showMenu();
+        UserManagement userManagement = new UserManagement();
+        LoginMenu loginMenu = new LoginMenu(userManagement);
+        loginMenu.showLoginMenu();
     }
 }
