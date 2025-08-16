@@ -1,5 +1,7 @@
 package org.example;
 
+import Models.User;
+import dto.UserDatabase;
 import management.UserManagement;
 import menu.LoginMenu;
 import menu.MainMenu;
@@ -15,8 +17,17 @@ public class Main {
 
     //    Sau khi co Login
     public static void main(String[] args) {
-        UserManagement userManagement = new UserManagement();
+        UserDatabase userDatabase = new UserDatabase("database/user.csv");
+        UserManagement userManagement = new UserManagement(userDatabase);
+
         LoginMenu loginMenu = new LoginMenu(userManagement);
-        loginMenu.showLoginMenu();
+        User currentUser = loginMenu.showLoginMenu();
+
+        if (currentUser != null) {
+            MainMenu mainMenu = new MainMenu(currentUser);
+            mainMenu.showMenu();
+        } else {
+            System.out.println("Chuong trinh ket thuc.");
+        }
     }
 }

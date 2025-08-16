@@ -11,44 +11,88 @@ public class LoginMenu {
         this.userManagement = userManagement;
     }
 
-    public void showLoginMenu() {
-        int choice;
-        do {
-            System.out.println("====== LOGIN MENU ======");
-            System.out.println("1. Dang ky");
-            System.out.println("2. Dang nhap");
-            System.out.println("0. Thoat");
+    //    public User showLoginMenu() {
+//        try {
+//            int choice;
+//            do {
+//                System.out.println("====== LOGIN MENU ======");
+//                System.out.println("1. Dang ky");
+//                System.out.println("2. Dang nhap");
+//                System.out.println("0. Thoat");
+//
+//                System.out.print("Nhap lua chon: ");
+//                choice = Input.inputIntNumber();
+//
+//                switch (choice) {
+//                    case 1:
+//                        register();
+//                        break;
+//                    case 2:
+//                        User currentUser = loginSystem();
+//                        if (currentUser != null) {
+//                            System.out.println("Dang nhap thanh cong!");
+//                            System.out.println("Xin chao " + currentUser.getFullName());
+//                            //MainMenu mainMenu = new MainMenu(); // vào menu chính
+//                            MainMenu mainMenu = new MainMenu(currentUser); // vào menu chính
+//                            mainMenu.showMenu();
+//                        } else {
+//                            System.out.println("Sai tai khoan hoac mat khau!");
+//                        }
+//                        break;
+//                    case 0:
+//                        System.out.println("Tam biet!");
+//                        break;
+//                    default:
+//                        System.out.println("Khong hop le!");
+//                }
+//            } while (choice != 0);
+//        } catch(Exception e){
+//            System.out.println(e);
+//        }
+//    }
+    public User showLoginMenu() {
+        try {
+            int choice;
+            do {
+                System.out.println("====== LOGIN MENU ======");
+                System.out.println("1. Dang ky");
+                System.out.println("2. Dang nhap");
+                System.out.println("0. Thoat");
 
-            System.out.print("Nhap lua chon: ");
-            choice = Input.inputIntNumber();
+                System.out.print("Nhap lua chon: ");
+                choice = Input.inputIntNumber();
 
-            switch (choice) {
-                case 1:
-                    register();
-                    break;
-                case 2:
-                    if (login()) {
-                        System.out.println("Dang nhap thanh cong!");
-                        MainMenu mainMenu = new MainMenu(); // vào menu chính
-                        mainMenu.showMenu();
-                    } else {
-                        System.out.println("Sai tai khoan hoac mat khau!");
+                switch (choice) {
+                    case 1 -> register();
+                    case 2 -> {
+                        User currentUser = loginSystem();
+                        if (currentUser != null) {
+                            System.out.println("Dang nhap thanh cong!");
+                            System.out.println("Xin chao " + currentUser.getFullName());
+                            return currentUser; // trả về user
+                        } else {
+                            System.out.println("Sai tai khoan hoac mat khau!");
+                        }
                     }
-                    break;
-                case 0:
-                    System.out.println("Tam biet!");
-                    break;
-                default:
-                    System.out.println("Khong hop le!");
-            }
-        } while (choice != 0);
+                    case 0 -> {
+                        System.out.println("Tam biet!");
+                        return null; //thoát
+                    }
+                    default -> System.out.println("Khong hop le!");
+                }
+            } while (choice != 0);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
     }
 
-    public void register(){
+
+    public void register() {
         System.out.println("====== REGISTER ======");
         System.out.println("Nhap username: ");
         String username = Input.inputString();
-        if(userManagement.findByUserName(username) != null) {
+        if (userManagement.findByUserName(username) != null) {
             System.out.println("Username da ton tai !!");
             return;
         }
@@ -56,18 +100,29 @@ public class LoginMenu {
         String password = Input.inputString();
         System.out.println("Nhap fullname: ");
         String fullName = Input.inputString();
-        User user = new User(username, password, fullName);
+        String role = "user";
+        User user = new User(username, password, fullName, role);
         userManagement.add(user);
         System.out.println("Dang ki thanh cong !");
     }
 
-    private boolean login(){
+    private boolean login() {
         System.out.println("====== LOGIN ======");
         System.out.println("Nhap username");
         String username = Input.inputString();
         System.out.println("Nhap password: ");
         String password = Input.inputString();
         return userManagement.checkLogin(username, password);
+    }
+
+    private User loginSystem() {
+        System.out.println("====== LOGIN ======");
+        System.out.println("Nhap username");
+        String username = Input.inputString();
+        System.out.println("Nhap password: ");
+        String password = Input.inputString();
+
+        return userManagement.login(username, password);
     }
 }
 

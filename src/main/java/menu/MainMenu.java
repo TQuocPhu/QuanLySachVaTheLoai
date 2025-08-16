@@ -2,6 +2,7 @@ package menu;
 
 import Models.Book;
 import Models.Category;
+import Models.User;
 import lib.Input;
 import management.BookManagement;
 import management.CategoryManagement;
@@ -11,18 +12,20 @@ import java.util.List;
 public class MainMenu {
     private BookManagement bookManagement;
     private CategoryManagement categoryManagement;
+    private User currentUser;
 
-    public MainMenu() {
+    public MainMenu(User currentUser) {
         this.bookManagement = new BookManagement();
         this.categoryManagement = new CategoryManagement();
+        this.currentUser = currentUser;
     }
 
     public void showMenu() {
         int choice;
         do {
             System.out.println("====== Menu =======");
-            System.out.println("1. Quan ly sach");
-            System.out.println("2. Quan ly loai sach");
+            System.out.println("1. Sach");
+            System.out.println("2. Loai Sach");
             System.out.println("0. Thoat");
 
             System.out.println("Nhap lua chon cua ban");
@@ -47,36 +50,39 @@ public class MainMenu {
         int choice;
         do {
             System.out.println("====== Category Menu =======");
-            System.out.println("1. Them loai");
-            System.out.println("2. Hien thi tat ca");
-            System.out.println("3. Sua loai");
-            System.out.println("4. Xoa loai");
+            System.out.println("1. Hien thi tat ca");
+
+            if ("admin".equals(currentUser.getRole())) {
+                System.out.println("2. Them loai");
+                System.out.println("3. Sua loai");
+                System.out.println("4. Xoa loai");
+            }
+
             System.out.println("0. Thoat");
 
             System.out.println("Nhap lua chon cua ban");
             choice = Input.inputIntNumber();
 
             switch (choice) {
-                case 1:
-                    showFormAddCategory();
-                    break;
-                case 2:
-                    showAllCategory();
-                    break;
-                case 3:
-                    showFormEditCategory();
-                    break;
-                case 4:
-                    showFormDeleteCategory();
-                    break;
-                case 0:
-                    System.out.println("GoodBye!");
-                    break;
-                default:
-                    System.out.println("Khong co lua chon nay");
+                case 1 -> showAllCategory();
+                case 2 -> {
+                    if ("admin".equals(currentUser.getRole())) showFormAddCategory();
+                    else System.out.println("Ban khong co quyen!");
+                }
+                case 3 -> {
+                    if ("admin".equals(currentUser.getRole())) showFormEditCategory();
+                    else System.out.println("Ban khong co quyen!");
+                }
+                case 4 -> {
+                    if ("admin".equals(currentUser.getRole())) showFormDeleteCategory();
+                    else System.out.println("Ban khong co quyen!");
+                }
+                case 0 -> System.out.println("GoodBye!");
+                default -> System.out.println("Khong co lua chon nay");
             }
         } while (choice != 0);
     }
+
 
     public void showAllCategory() {
         System.out.println("====== List Category =======");
@@ -139,41 +145,40 @@ public class MainMenu {
         int choice;
         do {
             System.out.println("====== Book Menu =======");
-            System.out.println("1. Them sach");
-            System.out.println("2. Hien thi tat ca");
-            System.out.println("3. Chi tiet sach");
-            System.out.println("4. Xoa sach");
-            System.out.println("5. Sua sach");
+            System.out.println("1. Hien thi tat ca");
+            System.out.println("2. Chi tiet sach");
+
+            if ("admin".equals(currentUser.getRole())) {
+                System.out.println("3. Them sach");
+                System.out.println("4. Sua sach");
+                System.out.println("5. Xoa sach");
+            }
+
             System.out.println("0. Thoat");
 
-            System.out.println("Nhap lua chon cua ban");
             choice = Input.inputIntNumber();
 
             switch (choice) {
-                case 1:
-                    showFormAddBook();
-                    break;
-                case 2:
-                    showAllBook();
-                    break;
-
-                case 3:
-                    showBookDetail();
-                    break;
-                case 4:
-                    showFormDeleteBook();
-                    break;
-                case 5:
-                    showFormEditBook();
-                    break;
-                case 0:
-                    System.out.println("GoodBye!");
-                    break;
-                default:
-                    System.out.println("Khong co lua chon nay");
+                case 1 -> showAllBook();
+                case 2 -> showBookDetail();
+                case 3 -> {
+                    if ("admin".equals(currentUser.getRole())) showFormAddBook();
+                    else System.out.println("Ban khong co quyen!");
+                }
+                case 4 -> {
+                    if ("admin".equals(currentUser.getRole())) showFormEditBook();
+                    else System.out.println("Ban khong co quyen!");
+                }
+                case 5 -> {
+                    if ("admin".equals(currentUser.getRole())) showFormDeleteBook();
+                    else System.out.println("Ban khong co quyen!");
+                }
+                case 0 -> System.out.println("GoodBye!");
+                default -> System.out.println("Khong co lua chon nay");
             }
         } while (choice != 0);
     }
+
 
     public void showAllBook(){
         System.out.println("====== List Book =======");
