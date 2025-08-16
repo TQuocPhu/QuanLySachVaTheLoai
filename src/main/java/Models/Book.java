@@ -9,6 +9,12 @@ public class Book {
 //    Luu tru id category
     private long categoryId;
 
+    public Book(long id, String name, String author, long categoryId) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.categoryId = categoryId;
+    }
 
     public Book(String name, String author, long categoryId) {
         this.id = countId;

@@ -1,23 +1,31 @@
 package management;
 
 import Models.Category;
+import dto.CategoryDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class CategoryManagement implements IManagement<Category> {
+    private CategoryDatabase categoryDatabase = new CategoryDatabase();
     List<Category> list = new ArrayList<>();
+
+    public CategoryManagement(){
+        this.list = categoryDatabase.readData();
+    }
 
     @Override
     public void add(Category category) {
         this.list.add(category);
+        categoryDatabase.writeData(this.list);
     }
 
     @Override
     public void delete(long id) throws Exception{
         int index = this.findIndexById(id);
         this.list.remove(index);
+        categoryDatabase.writeData(this.list);
     }
 
     @Override
@@ -26,6 +34,7 @@ public class CategoryManagement implements IManagement<Category> {
         Category oldData = this.findById(id);
         newCategory.setId(oldData.getId());
         this.list.set(index, newCategory);
+        categoryDatabase.writeData(this.list);
     }
 
     @Override

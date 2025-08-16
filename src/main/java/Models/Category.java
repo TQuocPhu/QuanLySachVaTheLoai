@@ -6,6 +6,12 @@ public class Category {
     private String description;
     private static long countIdCata = 1000L;
 
+    public Category(long id, String name, String description){
+        this.id = id;
+        this.nameCata = name;
+        this.description = description;
+    }
+
     public Category(String nameCata, String description) {
         this.id = countIdCata;
         this.nameCata = nameCata;

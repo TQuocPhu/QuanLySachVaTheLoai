@@ -1,6 +1,7 @@
 package management;
 
 import Models.Book;
+import dto.BookDatabase;
 
 
 import java.util.ArrayList;
@@ -9,16 +10,23 @@ import java.util.Objects;
 
 public class BookManagement implements IManagement<Book> {
     List<Book> list = new ArrayList<>();
+    private BookDatabase bookDatabase = new BookDatabase();
+
+    public BookManagement(){
+        this.list = bookDatabase.readData();
+    }
 
     @Override
     public void add(Book book) {
         this.list.add(book);
+        bookDatabase.writeData(this.list);
     }
 
     @Override
     public void delete(long id) throws Exception{
         int index = this.findIndexById(id);
         this.list.remove(index);
+        bookDatabase.writeData(this.list);
     }
 
     @Override
@@ -27,6 +35,7 @@ public class BookManagement implements IManagement<Book> {
         Book oldData = this.findById(id);
         newBook.setId(oldData.getId());
         this.list.set(index, newBook);
+        bookDatabase.writeData(this.list);
     }
 
     @Override
