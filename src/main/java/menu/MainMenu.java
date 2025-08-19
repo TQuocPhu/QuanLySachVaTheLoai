@@ -38,6 +38,9 @@ public class MainMenu {
                 case 2:
                     showCategoryMenu();
                     break;
+                case 0:
+                    System.out.println("GoodBye!");
+                    break;
                 default:
                     System.out.println("Khong co lua chon nay");
             }

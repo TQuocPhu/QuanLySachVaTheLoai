@@ -90,14 +90,34 @@ public class LoginMenu {
 
     public void register() {
         System.out.println("====== REGISTER ======");
-        System.out.println("Nhap username: ");
-        String username = Input.inputString();
-        if (userManagement.findByUserName(username) != null) {
-            System.out.println("Username da ton tai !!");
-            return;
-        }
-        System.out.println("Nhap password: ");
-        String password = Input.inputString();
+        String usernameRegex = "^[a-zA-Z0-9]+$";
+        String passwordRegex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$";
+
+        String username;
+        do{
+            System.out.println("Nhap username: ");
+            username = Input.inputString();
+            if(!username.matches(usernameRegex)){
+                System.out.println("Username khong hop le! Vui long chi nhap chu cai va chu so.");
+            } else if (userManagement.findByUserName(username) != null) {
+                System.out.println("Username da ton tai !!");
+            } else {
+                break;
+            }
+        } while(true);
+
+        String password;
+        do {
+            System.out.println("Nhap password (toi thieu 8 ky tu, it nhat 1 chu hoa, 1 chu so, 1 ky tu dac biet): ");
+            password = Input.inputString();
+            // Regex: 8 ký tự trở lên, ít nhất 1 chữ hoa, 1 chữ số, 1 ký tự đặc biệt
+            if (!password.matches(passwordRegex)) {
+                System.out.println("Password khong hop le! Vui long thu lai.");
+            } else {
+                break;
+            }
+        } while (true);
+
         System.out.println("Nhap fullname: ");
         String fullName = Input.inputString();
         String role = "user";
